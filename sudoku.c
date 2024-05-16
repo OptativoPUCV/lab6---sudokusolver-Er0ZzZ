@@ -67,26 +67,30 @@ int is_valid(Node* n) {
     return 1; // Si no se encontraron problemas, el estado es válido
 }
 
-List* get_adj_nodes(Node* n){
-   List* list=createList();
-   for(int i=0;i<9;i++)
-      {
-         for(int j=0;j<9;j++)
-            {
-               if(n->sudo[i][j]==0)
-               {
-                  for(int k=1;k<10;k++)
-                     {
-                        Node* adj= copy(n);
-                        adj->sudo[i][j]=k;
-                        if(is_valid(adj))
-                           pushBack(list,adj);  
-                     }
-               }  
+List* get_adj_nodes(Node* n) {
+    List* list = createList();
+
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            if (n->sudo[i][j] == 0) {
+                for (int k = 1; k <= 9; k++) {
+                    Node* adj = copy(n);
+                    adj->sudo[i][j] = k;
+
+                    if (is_valid(adj)) {
+                        pushBack(list, adj);
+                    } else {
+                        free(adj); // Liberar memoria si el nodo no es válido
+                    }
+                }
+                return list; // Terminar la función una vez que se encuentre un espacio vacío
             }
-      }
-   return list;
+        }
+    }
+
+    return list; // Si no hay espacios vacíos, devolver la lista vacía
 }
+
 
 
 int is_final(Node* n){
