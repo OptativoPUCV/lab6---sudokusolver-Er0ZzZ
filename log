@@ -25,3 +25,9 @@ sudoku.c:47:15: error: unused variable ‘k’ [-Werror=unused-variable]
 cc1: all warnings being treated as errors
 Compilation failed
 426e406
+Thu 16 May 2024 09:23:33 PM UTC: 
+ sudoku.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests:  5|3
+total_score: 35/70
+3a5afb1

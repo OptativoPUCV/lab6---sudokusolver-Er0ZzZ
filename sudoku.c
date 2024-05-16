@@ -44,7 +44,7 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    int i, j, k;
+    int i, j;
     int row[9][10] = {0}; // Arreglo para marcar números en filas
     int col[9][10] = {0}; // Arreglo para marcar números en columnas
     int subgrid[3][3][10] = {0}; // Arreglo para marcar números en submatrices de 3x3
