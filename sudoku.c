@@ -44,28 +44,39 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    int i, j;
-    int row[9][10] = {0}; // Arreglo para marcar números en filas
-    int col[9][10] = {0}; // Arreglo para marcar números en columnas
-    int subgrid[3][3][10] = {0}; // Arreglo para marcar números en submatrices de 3x3
+    int i, j, k;
 
+    // Verificar filas y columnas
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) {
-            if (n->sudo[i][j] == 0) continue; // Si la celda está vacía, saltar a la siguiente
-            int num = n->sudo[i][j];
             // Verificar fila
-            if (row[i][num]) return 0;
-            row[i][num] = 1;
+            for (k = 0; k < 9; k++) {
+                if (k != j && n->sudo[i][k] == n->sudo[i][j]) return 0;
+            }
             // Verificar columna
-            if (col[j][num]) return 0;
-            col[j][num] = 1;
-            // Verificar submatriz de 3x3
-            if (subgrid[i / 3][j / 3][num]) return 0;
-            subgrid[i / 3][j / 3][num] = 1;
+            for (k = 0; k < 9; k++) {
+                if (k != i && n->sudo[k][j] == n->sudo[i][j]) return 0;
+            }
+        }
+    }
+
+    // Verificar submatrices de 3x3
+    for (i = 0; i < 9; i += 3) {
+        for (j = 0; j < 9; j += 3) {
+            for (int x = i; x < i + 3; x++) {
+                for (int y = j; y < j + 3; y++) {
+                    for (int a = i; a < i + 3; a++) {
+                        for (int b = j; b < j + 3; b++) {
+                            if ((x != a || y != b) && n->sudo[x][y] == n->sudo[a][b]) return 0;
+                        }
+                    }
+                }
+            }
         }
     }
     return 1; // Si no se encontraron problemas, el estado es válido
 }
+
 
 
 
