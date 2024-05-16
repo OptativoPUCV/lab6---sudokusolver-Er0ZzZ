@@ -92,7 +92,6 @@ List* get_adj_nodes(Node* n) {
 
     if (!found_empty_cell) {
         // Si no se encontró ninguna celda vacía, liberar la memoria de la lista y devolver NULL
-        freeList(list);
         return NULL;
     }
 
