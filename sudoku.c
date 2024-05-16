@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
-
+#include <stdbool.h>
 
 typedef struct{
    int sudo[9][9];
