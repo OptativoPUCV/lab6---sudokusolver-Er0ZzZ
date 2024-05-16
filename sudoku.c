@@ -43,44 +43,30 @@ void print_node(Node* n){
     printf("\n");
 }
 
-int is_valid(Node* n){
-   int i,j,k;
-   for(i=0;i<9;i++)
-      {
-         for(j=0;j<9;j++)
-            {
-               if(n->sudo[i][j]==0) continue;
-               for(k=0;k<9;k++)
-                  {
-                     if(k==j) continue;
-                     if(n->sudo[i][k]==n->sudo[i][j]) return 0;
-                     
-                  }
-               for(k=0;k<9;k++)
-                  {
-                     if(k==i) continue;
-                     if(n->sudo[k][j]==n->sudo[i][j]) return 0;
-                     
-                  }
-               for(k=0;k<9;k++)
-                  {
-                     if(k==i) continue;
-                     if(k==j) continue;
-                     if(n->sudo[k][k]==n->sudo[i][j]) return 0;
-                     
-                  }
-               for(k=0;k<9;k++)
-                  {
-                     if(k==i) continue;
-                     if(k==j) continue;
-                     if(n->sudo[k][8-k]==n->sudo[i][j]) return 0;
-                  }
-               
-            }
-         
-      }
-   return 1;
+int is_valid(Node* n) {
+    int i, j, k;
+    int row[9][10] = {0}; // Arreglo para marcar números en filas
+    int col[9][10] = {0}; // Arreglo para marcar números en columnas
+    int subgrid[3][3][10] = {0}; // Arreglo para marcar números en submatrices de 3x3
+
+    for (i = 0; i < 9; i++) {
+        for (j = 0; j < 9; j++) {
+            if (n->sudo[i][j] == 0) continue; // Si la celda está vacía, saltar a la siguiente
+            int num = n->sudo[i][j];
+            // Verificar fila
+            if (row[i][num]) return 0;
+            row[i][num] = 1;
+            // Verificar columna
+            if (col[j][num]) return 0;
+            col[j][num] = 1;
+            // Verificar submatriz de 3x3
+            if (subgrid[i / 3][j / 3][num]) return 0;
+            subgrid[i / 3][j / 3][num] = 1;
+        }
+    }
+    return 1; // Si no se encontraron problemas, el estado es válido
 }
+
 
 
 List* get_adj_nodes(Node* n){
