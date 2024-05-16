@@ -44,57 +44,65 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    int i, j;
-    int row[9][10] = {0}; // Arreglo para marcar números en filas
-    int col[9][10] = {0}; // Arreglo para marcar números en columnas
-    int subgrid[3][3][10] = {0}; // Arreglo para marcar números en submatrices de 3x3
+   int i, j;
+   int row[9][10] = {0}; // Arreglo para marcar números en filas
+   int col[9][10] = {0}; // Arreglo para marcar números en columnas
+   int subgrid[3][3][10] = {0}; // Arreglo para marcar números en submatrices de 3x3
 
-    for (i = 0; i < 9; i++) {
-        for (j = 0; j < 9; j++) {
-            if (n->sudo[i][j] == 0) continue; // Si la celda está vacía, saltar a la siguiente
-            int num = n->sudo[i][j];
-            // Verificar fila
-            if (row[i][num]) return 0;
-            row[i][num] = 1;
-            // Verificar columna
-            if (col[j][num]) return 0;
-            col[j][num] = 1;
-            // Verificar submatriz de 3x3
-            if (subgrid[i / 3][j / 3][num]) return 0;
-            subgrid[i / 3][j / 3][num] = 1;
-        }
-    }
-    return 1; // Si no se encontraron problemas, el estado es válido
+   for (i = 0; i < 9; i++) {
+      for (j = 0; j < 9; j++) {
+         if (n->sudo[i][j] == 0) continue; // Si la celda está vacía, saltar a la siguiente
+         int num = n->sudo[i][j];
+         // Verificar fila
+         if (row[i][num]) return 0;
+         row[i][num] = 1;
+         // Verificar columna
+         if (col[j][num]) return 0;
+         col[j][num] = 1;
+         // Verificar submatriz de 3x3
+         if (subgrid[i / 3][j / 3][num]) return 0;
+         subgrid[i / 3][j / 3][num] = 1;
+      }
+   }
+   return 1; // Si no se encontraron problemas, el estado es válido
 }
 
 List* get_adj_nodes(Node* n) {
-    List* list = createList();
+   List* list = createList();
 
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            if (n->sudo[i][j] == 0) {
-                for (int k = 1; k <= 9; k++) {
-                    Node* adj = copy(n);
-                    adj->sudo[i][j] = k;
-
-                    if (is_valid(adj)) {
-                        pushBack(list, adj);
-                    } else {
-                        free(adj); // Liberar memoria si el nodo no es válido
-                    }
-                }
-                return list; // Terminar la función una vez que se encuentre un espacio vacío
+   for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+         if (n->sudo[i][j] == 0) {
+            for (int k = 1; k <= 9; k++) {
+               Node* adj = copy(n);
+               adj->sudo[i][j] = k;
+                  
+               if (is_valid(adj)) {
+                  pushBack(list, adj);
+               } 
+               else {
+                  free(adj); // Liberar memoria si el nodo no es válido
+               }
             }
-        }
-    }
-
-    return list; // Si no hay espacios vacíos, devolver la lista vacía
+            return list; // Terminar la función una vez que se encuentre un espacio vacío
+         }
+      }
+   }
+   return list; // Si no hay espacios vacíos, devolver la lista vacía
 }
 
-
-
 int is_final(Node* n){
-    return 0;
+   for(int i=0; i<9; i++)
+      {
+         for(int j=0; j<9; j++)
+            {
+               if(n->sudo[i][j]==0)
+                  return 0;
+            }
+         
+      }
+   return 1;
+   
 }
 
 Node* DFS(Node* initial, int* cont){
