@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
-#include <stdbool.h>
+
 
 typedef struct{
    int sudo[9][9];
@@ -67,38 +67,26 @@ int is_valid(Node* n) {
     return 1; // Si no se encontraron problemas, el estado es válido
 }
 
-List* get_adj_nodes(Node* n) {
-    List* list = createList();
-    bool found_empty_cell = false;
-
-    // Explorar todas las celdas del sudoku
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            if (n->sudo[i][j] == 0) {
-                found_empty_cell = true; // Indicar que se encontró una celda vacía
-                // Intentar asignar valores del 1 al 9 y verificar si el sudoku es válido
-                for (int k = 1; k <= 9; k++) {
-                    Node* adj = copy(n); // Suponiendo que tienes una función copy para crear una copia del nodo
-                    adj->sudo[i][j] = k;
-                    if (is_valid(adj)) {
-                        pushBack(list, adj); // Agregar el nodo válido a la lista
-                    } else {
-                        free(adj); // Liberar la memoria del nodo si no es válido
-                    }
-                }
+List* get_adj_nodes(Node* n){
+   List* list=createList();
+   for(int i=0;i<9;i++)
+      {
+         for(int j=0;j<9;j++)
+            {
+               if(n->sudo[i][j]==0)
+               {
+                  for(int k=1;k<10;k++)
+                     {
+                        Node* adj= copy(n);
+                        adj->sudo[i][j]=k;
+                        if(is_valid(adj))
+                           pushBack(list,adj);  
+                     }
+               }  
             }
-        }
-    }
-
-    if (!found_empty_cell) {
-        // Si no se encontró ninguna celda vacía, liberar la memoria de la lista y devolver NULL
-        clean(list);
-        return NULL;
-    }
-
-    return list;
+      }
+   return list;
 }
-
 
 
 int is_final(Node* n){
